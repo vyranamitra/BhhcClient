@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en-US">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<body ng-app="bhhc">
+    <div ng-controller="bhhcController">
+        <h1>Hello {{user}}</h1>
+
+    </div>
+</body>
+
+<script>
+var app = angular.module("bhhc", []);
+
+var bhhcController = function ($scope, $http) {
+    $scope.user = "Vivek Rana-Mitra";
+
+    var getWeather = function () {
+        $http.get("").then(functionCallbackSuccess, functionCallbackError);
+    };
+
+    var getReasons = function () {
+        $http.get("https://bhhc-1-dev-as.azurewebsites.net").then(functionCallbackSuccess, functionCallbackError);
+    };
+
+    var functionCallbackSuccess = function (response) {
+        alert(response);
+    };
+
+    var functionCallbackError = function (reason) {
+        alert("Error: " + reason.xhrStatus);
+    };
+
+    getReasons();
+};
+
+    app.controller("bhhcController", ["$scope", "$http", bhhcController]);
+</script>
+</html>
