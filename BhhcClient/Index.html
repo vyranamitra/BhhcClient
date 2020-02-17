@@ -11,7 +11,7 @@
             $scope.user = "Vivek Rana-Mitra";
             $scope.reasons = null;
 
-            var getReasons = function () {
+            $scope.getReasons = function () {
                 try {
                     var authToken = "Basic " + btoa("683202f0-d438-4b47-a426-813eb94f9d14");
                     $http({
