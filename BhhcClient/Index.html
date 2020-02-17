@@ -1,41 +1,55 @@
 ﻿<!DOCTYPE html>
 <html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script>
+        var app = angular.module("bhhc", []);
+        var bhhcController = function ($scope, $http) {
+            $scope.user = "Vivek Rana-Mitra";
+            $scope.reasons = null;
 
-<body ng-app="bhhc">
-    <div ng-controller="bhhcController">
-        <h1>Hello {{user}}</h1>
+            var getReasons = function () {
+                try {
+                    var authToken = "Basic " + btoa("683202f0-d438-4b47-a426-813eb94f9d14");
+                    $http({
+                        method: "get",
+                        headers: {
+                            "content-type": "application=json",
+                            "authorization":authToken
+                        },
+                        url: "https://bhhcwebapi-dev-as.azurewebsites.net/api/bhhc"
+                    }).then(functionCallbackSuccess, functionCallbackError);
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+            };
 
-    </div>
-</body>
 
-<script>
-var app = angular.module("bhhc", []);
+            var functionCallbackSuccess = function (response) {
+                $scope.reasons = response.data;
+            };
 
-var bhhcController = function ($scope, $http) {
-    $scope.user = "Vivek Rana-Mitra";
 
-    var getWeather = function () {
-        $http.get("").then(functionCallbackSuccess, functionCallbackError);
-    };
+            var functionCallbackError = function (reason) {
+                alert("Error: " + reason.statusText + " " + reason.data.Message);
+            };
+        };
 
-    var getReasons = function () {
-        $http.get("https://bhhc-1-dev-as.azurewebsites.net").then(functionCallbackSuccess, functionCallbackError);
-    };
+        app.controller("bhhcController", ["$scope", "$http", bhhcController]);
+    </script>
+  </head>
 
-    var functionCallbackSuccess = function (response) {
-        alert(response);
-    };
-
-    var functionCallbackError = function (reason) {
-        alert("Error: " + reason.xhrStatus);
-    };
-
-    getReasons();
-};
-
-    app.controller("bhhcController", ["$scope", "$http", bhhcController]);
-</script>
+    <body ng-app="bhhc">
+        <div ng-controller="bhhcController" ng-init="getReasons()">
+            <h1>Hello {{user}}</h1>
+            <h2>Top 3 Reasons</h2>
+            <li ng-repeat="reason in reasons">
+                {{reason.Text}}
+            </li>
+        </div>
+    </body>
 </html>
