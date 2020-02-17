@@ -2,13 +2,19 @@
 <html lang="en-US">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-
+    <style>
+        body {
+            background-color:whitesmoke;
+        }
+        div {
+            margin-left:50px;
+        }
+    </style>
     <script>
         var app = angular.module("bhhc", []);
         var bhhcController = function ($scope, $http) {
-            $scope.user = "Vivek Rana-Mitra";
+            $scope.company = "BHHC";
             $scope.reasons = null;
 
             $scope.getReasons = function () {
@@ -45,11 +51,10 @@
 
     <body ng-app="bhhc">
         <div ng-controller="bhhcController" ng-init="getReasons()">
-            <h1>Hello {{user}}</h1>
-            <h2>Top 3 Reasons</h2>
-            <li ng-repeat="reason in reasons">
-                {{reason.Text}}
-            </li>
+            <h2>Top 3 Reasons I want to work for {{company}}</h2>
+            <div ng-repeat="reason in reasons">
+                {{$index+1}}. {{reason.Text}}
+            </div>
         </div>
     </body>
 </html>
