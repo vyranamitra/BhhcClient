@@ -1,60 +1,54 @@
 ﻿<!DOCTYPE html>
 <html lang="en-US">
-<head>
-    <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <style>
-        body {
-            background-color:whitesmoke;
-        }
-        div {
-            margin-left:50px;
-        }
-    </style>
-    <script>
-        var app = angular.module("bhhc", []);
-        var bhhcController = function ($scope, $http) {
-            $scope.company = "BHHC";
-            $scope.reasons = null;
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+        <script>
+            var app = angular.module("bhhc", []);
+            var bhhcController = function ($scope, $http) {
+                $scope.company = "BHHC";
+                $scope.reasons = null;
 
-            $scope.getReasons = function () {
-                try {
-                    var authToken = "Basic " + btoa("683202f0-d438-4b47-a426-813eb94f9d14");
-                    $http({
-                        method: "get",
-                        headers: {
-                            "content-type": "application=json",
-                            "authorization":authToken
-                        },
-                        url: "https://bhhcwebapi-dev-as.azurewebsites.net/api/bhhc"
-                    }).then(functionCallbackSuccess, functionCallbackError);
-                }
-                catch (err) {
-                    alert(err.message);
-                }
+                $scope.getReasons = function () {
+                    try {
+                        var authToken = "Basic " + btoa("683202f0-d438-4b47-a426-813eb94f9d14");
+                        $http({
+                            method: "get",
+                            headers: {
+                                "content-type": "application=json",
+                                "authorization": authToken
+                            },
+                            url: "https://bhhcwebapi-dev-as.azurewebsites.net/api/bhhc"
+                        }).then(functionCallbackSuccess, functionCallbackError);
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+                };
+
+
+                var functionCallbackSuccess = function (response) {
+                    $scope.reasons = response.data;
+                };
+
+
+                var functionCallbackError = function (reason) {
+                    alert("Error: " + reason.statusText + " " + reason.data.Message);
+                };
             };
 
-
-            var functionCallbackSuccess = function (response) {
-                $scope.reasons = response.data;
-            };
-
-
-            var functionCallbackError = function (reason) {
-                alert("Error: " + reason.statusText + " " + reason.data.Message);
-            };
-        };
-
-        app.controller("bhhcController", ["$scope", "$http", bhhcController]);
-    </script>
-  </head>
-
-    <body ng-app="bhhc">
+            app.controller("bhhcController", ["$scope", "$http", bhhcController]);
+        </script>
+        <title>BHHC Interview Project</title>
+    </head>
+    <body ng-app="bhhc" class="container-md">
         <div ng-controller="bhhcController" ng-init="getReasons()">
-            <h2>Top 3 Reasons I want to work for {{company}}</h2>
-            <div ng-repeat="reason in reasons">
-                {{$index+1}}. {{reason.Text}}
-            </div>
+            <h2 class="h2">Top 3 Reasons I want to work for {{company}}</h2>
+            <ul class="list-group" ng-repeat="reason in reasons">
+                <li class="list-group-item list-group-item-action">{{$index+1}}. {{reason.Text}}</li>
+            </ul>
         </div>
     </body>
 </html>
